@@ -1,0 +1,30 @@
+
+
+.gradient-text,h2 {
+    background: linear-gradient(to right, #157347,white);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-black {
+    background: linear-gradient(to right, #157347,#212529, black);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-black-double {
+    background: linear-gradient(to right, #157347,#157347,black,black );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cursor-hover {
+    cursor: pointer;
+}
+
+.hover-darken:hover {
+    filter: brightness(70%);
+}
