@@ -27,7 +27,7 @@ if (isset($_SESSION["user"])) {
         <div class="container align-items-center justify-content-center h-100 w-50 mx-auto text-light bg-dark">
             
             <h1 class="text-center display-1">Kayıt Ol </h1>
-            <form class="card border-0 shadow-sm p-4 align-items-center bg-dark" method="POST" action="Security.php?register=true">
+            <form class="card border-0 shadow-sm p-4 align-items-center bg-dark" method="POST" action="security.php?register=true">
                 <div class="form-group row mb-3 m-2 label-floating w-75 ">
                     <!-- 11 hane sınırlı tc inputu -->
                     <input type="text" class="form-control" placeholder="TC Kimlik Numarası" id="tc" maxlength="11"
@@ -92,9 +92,9 @@ if (isset($_SESSION["user"])) {
                     if (this.readyState == 4 && this.status == 200) {
                         var res = this.responseText;
                         if (res == "1") {
-                            window.location.href = "login.php";
+                            return true;
                         } else {
-                            console.log("Kod yanlış");
+                            return false;
                         }
                     }
                 };

@@ -9,7 +9,7 @@ if (isset($_GET['logout']) && $_GET['logout'] === 'true') {
 }
 
 
-function showAlert($message=null, $type="info"){
+function showAlert($message=null, $type="info", $jsInside=null){
     if ($message) {
         $_SESSION["lastMSG"] = $message;
         $_SESSION["lastMSGType"] = $type;
@@ -18,11 +18,21 @@ function showAlert($message=null, $type="info"){
     if ($_SESSION["lastMSG"]) {
       $msg = $_SESSION["lastMSG"];
       $type = $_SESSION["lastMSGType"];
-      echo '<script>'
-          . 'document.querySelector(".alert-message").innerHTML = "'.$msg.'";'
-          . 'document.querySelector(".alert").style.display = "block";'
-          . 'document.querySelector(".alert").className = "alert fw-bolder alert-dismissible fade show topAlert alert-'.$type.'";'
+      
+      if ($jsInside) {
+        echo 'document.querySelector(".alert").style.display = "block";'
+        . 'document.querySelector(".alert").className = "alert fw-bolder alert-dismissible fade show topAlert alert-'.$type.'";'
+        . 'document.querySelector(".alert-message").innerHTML = "'.$msg.'";';
+        
+      }
+      else {
+        echo '<script>'
+        . 'document.querySelector(".alert").style.display = "block";'
+        . 'document.querySelector(".alert").className = "alert fw-bolder alert-dismissible fade show topAlert alert-'.$type.'";'
+        . 'document.querySelector(".alert-message").innerHTML = "'.$msg.'";'
           . '</script>';
+      }
+    
           
       $_SESSION["lastMSG"] = null;
       $_SESSION["lastMSGType"] = null;
@@ -68,7 +78,9 @@ function loginRequired(){
 
 function sendCodeMail($toMail,$toName){
     $code = rand(100000,999999);
-
+    $_SESSION["code"] = $code;
+    echo $code;
+    echo $_SESSION["code"];
     $url = "http://localhost/GarantiBBVA/php/mailAPI.php";
     $data = array(
         'toMail' => $toMail,
@@ -89,11 +101,10 @@ function sendCodeMail($toMail,$toName){
     if ($result === false) {
         // Handle error
         $_SESSION["code"] = null;
-        return false;
-    } else {
-        // Do something with the result
-        $_SESSION["code"] = $code;
-        return true;
+        return [false,null];
+    }
+    else {
+        return [true,$code];
     }
 }
 ?>

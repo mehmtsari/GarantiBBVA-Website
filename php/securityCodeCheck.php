@@ -2,15 +2,12 @@
 session_start();
 
 $code = $_GET["code"];
+$code2 = $_GET["code2"];
 
-if (!isset($_SESSION["code"])){
-    echo "0";
-}
-else if ($code == $_SESSION["code"]){
-    $_SESSION["code"] = null;
+if ($code == $code2) {
     echo "1";
 }
-else{
+else {
     echo "0";
 }
 ?>

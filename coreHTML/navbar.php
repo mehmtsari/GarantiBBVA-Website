@@ -38,12 +38,7 @@
             <i class="bi bi-check-circle-fill me-2"></i>
             <span class="alert-message">İşlem başarılı</span>
           </div>
-          <button type="button" class="btn-close alertBtn" data-bs-dismiss="alert" aria-label="Close"></button>
+          <button type="button" class="btn-close alertBtn" aria-label="Close" onclick="document.querySelector('.alert').style.display = 'none';"></button>
         </div>
-        <script>
-          document.querySelector(".alertBtn").addEventListener("click", function () {
-            document.querySelector(".alert").style.display = "none";
-          });
-        </script>
       </div>
 </div>
