@@ -54,7 +54,7 @@ if (isset($_SESSION["user"])) {
 
                 <div
                     class="form-group row mb-5 m-4 label-floating w-75 h-100 align-items-center justify-content-center">
-                    <button type="submit" class="btn btn-success text-center w-75  registerBtn" >
+                    <button type="submit" class="btn btn-success text-center w-75" >
                         Kayıt Ol
                     </button>
                         
@@ -83,39 +83,10 @@ if (isset($_SESSION["user"])) {
 
 
         ?>
-        <script>
-            // securityCodeCheck.php get isteği
-            function codeControl() {
-                var code = document.getElementById("code").value;
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        var res = this.responseText;
-                        if (res == "1") {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                };
-                xhttp.open("GET", "php/securityCodeCheck.php?code=" + code, true);
-                xhttp.send();
-            }
-        </script>
-
-
-
-
-
 
     </div>
 
-    <?php
-    if ($_SERVER["REQUEST_METHOD"] == "GET") {
-        echo '<script src="js/signInOut.js"></script>';
-    }
-    ?>
-
+    <script src="js/signInOut.js"></script>
     <?php
     include 'php/bodyEnd.php';
     ?>
