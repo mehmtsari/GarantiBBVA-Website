@@ -23,10 +23,11 @@
       <div class="col-md-3 text-end">
         <?php 
         if (isset($_SESSION["user"])) {
+          echo '<a type="button" href="account.php" class="btn btn-outline-success me-2">Hesap Bilgilerim</a>';
           echo '<a type="button" href="php/main.php?logout=true" class="btn btn-outline-danger me-2">Çıkış Yap</a>';
         } else {
-          echo '<a type="button" href="register.php" class="btn btn-success me-2">Müşteri Ol</a>
-          <a type="button" href="login.php" class="btn btn-outline-success">Giriş Yap</a>';
+          echo '<a type="button" href="register.php" class="btn btn-success me-2">Müşteri Ol</a>';
+          echo '<a type="button" href="login.php" class="btn btn-outline-success">Giriş Yap</a>';
         }
         ?>
       </div>
