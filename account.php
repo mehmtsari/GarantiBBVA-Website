@@ -14,7 +14,7 @@ loginRequired();
 ?>
 
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-bs-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -25,169 +25,122 @@ loginRequired();
     ?>
 </head>
 
-<body class="bg-dark text-light">
+<body>
     <?php
     include 'coreHTML/navbar.php';
     ?>
 
-    <div class="container mt-5">
-        <h1>Hesap Bilgilerim</h1>
-
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <h3>Kişisel Bilgiler</h3>
-                <div class="card bg-success text-light mb-3 ">
-                    <div class="card-body">
-                        <table class="table table-striped table-success">
-                            <tbody>
-                                <tr>
-                                    <td>Ad</td>
-                                    <td>
-                                        <?php echo $name; ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Soyad</td>
-                                    <td>
-                                        <?php echo $lastname; ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>TC Kimlik Numarası</td>
-                                    <td>
-                                        <?php echo $user["tcNo"]; ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Doğum Tarihi</td>
-                                    <td>01/01/2000</td>
-                                </tr>
-                                <tr>
-                                    <td>Telefon Numarası</td>
-                                    <td>555-555-5555</td>
-                                </tr>
-                                <tr>
-                                    <td>E-mail</td>
-                                    <td>
-                                        <a href="mailto: <?php echo $user['eMail']; ?>">
-                                            <?php echo $user['eMail']; ?>
-                                        </a>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
 
 
+    <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+        <div class="container-fluid py-3">
+            <div class="row">
+                <div class="col-md-6 rounded-4 bg-light-subtle">
+                    <div class="h-100 p-5 rounded-3">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h2>Kişi Bilgileri</h2>
+                            </div>
 
-                        <table class="table table-striped table-success">
-                            <thead>
-                                <tr>
-                                    <th>Adres</th>
-                                    <th>Adres Tipi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1234 Main St</td>
-                                    <td>Ev</td>
-                                </tr>
-                                <tr>
-                                    <td>5678 Main St</td>
-                                    <td>İş</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="floatingInput" placeholder="Ad"
+                                        value="<?php echo $name; ?>">
+                                    <label for="floatingInput">Ad</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="floatingInput" placeholder="Soyad"
+                                        value="<?php echo $lastname; ?>">
+                                    <label for="floatingInput">Soyad</label>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="floatingInput"
+                                        placeholder="TC Kimlik No" value="<?php echo $user["tcNo"]; ?>">
+                                    <label for="floatingInput">TC Kimlik No</label>
+                                </div>
 
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="floatingInput" placeholder="Telefon"
+                                        value="+90 (553)163 69-50">
+                                    <label for="floatingInput">Telefon</label>
+                                </div>
+                            </div>
+                        </div>
 
-                        <a href="edit.php" class="btn btn-light btn-block w-100 h-100 fw-bolder">Düzenle</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <h3>Hesap Bilgileri</h3>
-                <div class="col">
-                    <div class="card bg-success text-light">
-                        <div class="card-body">
-
-                            <table class="table table-success bg-success text-light">
-                                <tbody>
-                                    <tr>
-                                        <td>Hesap Numarası</td>
-                                        <td>
-                                            <span class="fw-bolder">000000000000000000000000</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Hesap Türü</td>
-                                        <td>
-                                            Bireysel
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Para Birimi</td>
-                                        <td>
-                                            USD
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Bakiye</td>
-                                        <td>
-                                            $1000
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>IBAN</td>
-                                        <td>
-                                            TR000000000000000000000000
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            <a href="transfer.php" class="btn btn-light btn-block w-100 h-100 fw-bolder">Para
-                                Transferi</a>
-
+                        <div class="row mb-3">
+                            <div>
+                                <div class="form-floating mb-6">
+                                    <input type="text" class="form-control" id="floatingInput" placeholder="IBAN"
+                                        value="TR 00 0000 0000 0000 0000 0000 99">
+                                    <label for="floatingInput">IBAN</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <div class="col-md-6">
+                    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h2>Hesap Bilgileri</h2>
+                            </div>
+                            <div class="col-md-5">
+                                <button type="button" class="btn btn-success w-100">Para Transferi
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                        <path
+                                            d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
 
-            </div>
-        </div>
+                        <div class="row">
+                            <div class="row bg-body rounded-3 p-3 mb-2">
+                                <div class="col-md-6">
+                                    <p class="fw-bolder">Hesap No</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="fw-bolder ">000000000000000000000000</p>
+                                </div>
+                            </div>
+                            <div class="row bg-body rounded-3 p-2 mb-2">
+                                <div class="col-md-6">
+                                    <p class="fw-bolder">Hesap Türü</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="fw-bolder">Vadesiz Hesap</p>
+                                </div>
+                            </div>
+                            <div class="row bg-body rounded-3 p-2 mb-2">
+                                <div class="col-md-6">
+                                    <p class="fw-bolder">Hesap Bakiyesi</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="fw-bolder">0.00 TL</p>
+                                </div>
+                            </div>
 
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <h3>Para Akışı</h3>
-                <table class="table table-striped table-dark">
-                    <thead>
-                        <tr>
-                            <th>Tarih/Saat</th>
-                            <th>Açıklama</th>
-                            <th>Tutar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>01/01/2022 12:00</td>
-                            <td>Maaş Ödemesi</td>
-                            <td>$2000</td>
-                        </tr>
-                        <tr>
-                            <td>02/01/2022 12:00</td>
-                            <td>Fatura Ödemesi</td>
-                            <td>-$100</td>
-                        </tr>
-                        <tr>
-                            <td>03/01/2022 12:00</td>
-                            <td>Havale</td>
-                            <td>-$500</td>
-                        </tr>
-                    </tbody>
-                </table>
+                        </div>
+
+
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 
