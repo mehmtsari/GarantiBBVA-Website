@@ -24,7 +24,6 @@ include 'php/main.php';
   ?>
 
   <div class="container my-5">
-    //title
     <div class="row ">
       <div class="row">
       <div class="col-md-8 ">
@@ -108,7 +107,6 @@ include 'php/main.php';
           </div>
         </div>
       </div>
-      // title
       <div class="row">
         <div class="col-md-20">
           <h1 class="text-center text-light display-4 fw-light gradient-text fw-medium">Garanti BBVA Hakkında</h1>

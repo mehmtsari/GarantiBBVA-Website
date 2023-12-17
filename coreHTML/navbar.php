@@ -15,7 +15,7 @@
         <li><a href="info.php" class="nav-link px-3 text-success">Hakkımızda</a></li>
         <li><a href="services.php" class="nav-link px-3 text-success">Hizmetlerimiz</a></li>
       </ul>
-      <div class="card justify-content-center text-center " style="width: 220px; height:40px;">
+      <div class="card justify-content-center text-center bg-light " style="width: 220px; height:40px;">
         <div class="card-body">
           <span class="fw-bolder text-dark h-100 w-100 gradient-text-black-double" id="navExchangeBox"></span>
         </div>

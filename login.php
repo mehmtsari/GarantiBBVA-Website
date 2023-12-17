@@ -38,7 +38,7 @@ login();
       <form class="card border-0 shadow-sm p-4 align-items-center bg-dark" method="POST">
 
         <div class="form-group row mb-3 m-2 label-floating w-75 ">
-          <input type="text" class="form-control" placeholder="Kullanıcı adı" name="tc">
+          <input type="text" class="form-control" placeholder="TC Kimlik Numarası" name="tc">
         </div>
         <div class="form-group row mb-3 m-4 label-floating w-75 h-100">
           <input type="password" class="form-control" placeholder="Şifre" name="password">
