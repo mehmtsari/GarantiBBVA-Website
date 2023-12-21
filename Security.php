@@ -11,6 +11,46 @@ if (isset($_GET["register"])) {
     }
 }
 
+if (isset($_GET["action"]))
+    {
+        if ($_GET['action'] == "register"){
+            $toMail = $_POST["email"];
+            $toName = $_POST["fullname"];
+        }
+        elseif ($_GET['action'] == "transfer"){
+            
+            if ($_GET['method'] == 0){
+                
+                if (!isIbanExists($_POST["IBAN"])){
+                    header("Location: account.php?404Error=İban bulunamadı");
+                    die();
+                }
+            }
+            elseif ($_GET['method'] == 1){
+                if (!isUserNameExists($_POST["name"])){
+                    header("Location: account.php?404Error=İsim bulunamadı");
+                    die();
+                }
+            }
+            elseif ($_GET['method'] == 2){
+                if (!isAccountNumberExists($_POST["accountNumber"])){
+                    header("Location: account.php?404Error=Hesap bulunamadı");
+                    die();
+                }
+            }
+            $user = json_decode($_SESSION["user"], true);
+            $toMail = $user["email"];
+            $toName = $user["fullName"];
+        }
+        else{
+            $user = json_decode($_SESSION["user"], true);
+            $toMail = $user["email"];
+            $toName = $user["fullName"];
+        }
+    }
+
+
+
 
 
 ?>
@@ -26,14 +66,18 @@ if (isset($_GET["register"])) {
     ?>
 
     <?php
+    echo '<div>';
+    echo json_encode($_POST);
+    echo '</div>';
     
-    echo '<form  method="POST" action="php/securityAction.php?action=register" hidden>';
+    echo '<form  method="POST" action="php/securityAction.php?' . $_SERVER["QUERY_STRING"] . '">';
     // post verilerini buraya işle
     foreach ($_POST as $key => $value) {
         echo '<input type="text" name="' . $key . '" value="' . $value . '">';
     }
     echo '<button type="submit" id="actionBTN" name="actionBTN"></button>';
     echo '</form>';
+
     ?>
 
 </head>
@@ -75,8 +119,6 @@ if (isset($_GET["register"])) {
 
     </div>
     <?php
-    $toMail = $_POST["email"];
-    $toName = $_POST["fullname"];
     $boolres = sendCodeMail($toMail, $toName);
     if ($boolres[0]) {
         echo '<script>startTimer();</script>';

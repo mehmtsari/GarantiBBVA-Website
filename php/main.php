@@ -76,6 +76,20 @@ function loginRequired(){
     }
 }
 
+function adminRequired(){
+    if (!isset($_SESSION["user"])) {
+        header("Location: login.php?loginReq=true");
+        exit();
+    }
+    $user = json_decode($_SESSION["user"], true);
+    if ($user["isAdmin"] != 1) {
+        header("Location: home.php?404Error=Yetkisiz erişim");
+        exit();
+    }
+}
+
+
+
 function sendCodeMail($toMail,$toName){
     $code = rand(100000,999999);
     $_SESSION["code"] = $code;

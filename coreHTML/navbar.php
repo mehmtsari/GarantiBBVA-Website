@@ -1,6 +1,6 @@
 
 
-<div class="container">
+<div class="container ">
     <header data-type="navbar"
       class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom ">
       <div class="col-md-3 mb-2 mb-md-0">
@@ -23,6 +23,10 @@
       <div class="col-md-3 text-end">
         <?php 
         if (isset($_SESSION["user"])) {
+          $user = json_decode($_SESSION["user"], true);
+          if ($user["roleID"] == 1) {
+            echo '<a type="button" href="adminPanel.php" class="btn btn-outline-info me-2" style="width: 70px;">Admin Paneli</a>';
+          }
           echo '<a type="button" href="account.php" class="btn btn-outline-success me-2">Hesap Bilgilerim</a>';
           echo '<a type="button" href="php/main.php?logout=true" class="btn btn-outline-danger me-2">Çıkış Yap</a>';
         } else {

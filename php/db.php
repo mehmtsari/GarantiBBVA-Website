@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "garantidb";
+$dbname = "bbvadb";
 $conn = connectDB($servername, $username, $password, $dbname);
 
 
@@ -91,6 +91,202 @@ function controlUserData($tc, $fullname, $email, $password, $password2)
 
 }
 
+function generateRandomIBAN() {
+  $countryCode = "TR"; 
+  $checkDigits = "00";
+  $bankCode = str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);
+  $accountNumber = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
+
+  $iban = $countryCode . $checkDigits . $bankCode . $accountNumber;
+
+  return $iban;
+}
+
+function getUserIdFromTC($tc){
+  global $conn;
+  $sql = "SELECT * FROM users WHERE tcNo='$tc'";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    return $row["id"];
+  } else {
+    return false;
+  }
+}
+
+function getUserIdFromIBAN($iban){
+  global $conn;
+  $sql = "SELECT * FROM users WHERE iban='$iban'";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    return $row["id"];
+  } else {
+    return false;
+  }
+}
+
+function getUserIdFromName($name){
+  global $conn;
+  $sql = "SELECT * FROM users WHERE fullName='$name'";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    return $row["id"];
+  } else {
+    return false;
+  }
+}
+
+function getUserIdFromAccountNumber($accountNumber){
+  global $conn;
+  $sql = "SELECT * FROM bankaccounts WHERE accountNumber='$accountNumber'";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    return $row["userID"];
+  } else {
+    return false;
+  }
+}
+
+
+function isIbanExists($iban){
+  global $conn;
+  $sql = "SELECT * FROM users WHERE iban='$iban'";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function isUserNameExists($name){
+  global $conn;
+  $sql = "SELECT * FROM users WHERE fullName='$name'";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function isAccountNumberExists($accountNumber){
+  global $conn;
+  $sql = "SELECT * FROM bankaccounts WHERE accountNumber='$accountNumber'";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+function insertBankAccount($userId,$type,$count){
+  global $conn;
+  $accountNumber = rand(100,999)."-".rand(1000,9999)." ".rand(100,999);
+  $date = date("Y-m-d H:i:s");
+  $sql = "INSERT INTO bankaccounts (userID, accountNumber, type,amountMoney,createdDate) VALUES ('$userId', '$accountNumber', '$type','$count','$date')";
+
+  if (mysqli_query($conn, $sql)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function transferMoney($from,$to,$count,$desc){
+  global $conn;
+  $date = date("Y-m-d H:i:s");
+  $sql = "INSERT INTO moneytransfers (senderId, receiverId, description,count,dateTime) VALUES ('$from', '$to', '$desc','$count','$date')";
+  if (mysqli_query($conn, $sql)) {
+    setMoney($from,getMoney($from)-$count);
+    setMoney($to,getMoney($to)+$count);
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function getMoney($userId){
+  global $conn;
+  $sql = "SELECT * FROM bankaccounts WHERE userID='$userId'";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    return $row["amountMoney"];
+  } else {
+    return false;
+  }
+}
+
+function setMoney($userId,$count){
+  global $conn;
+  $sql = "UPDATE bankaccounts SET amountMoney='$count' WHERE userID='$userId'";
+  if (mysqli_query($conn, $sql)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function getBankAccountsData($userId){
+  global $conn;
+  $sql = "SELECT * FROM bankaccounts WHERE userID='$userId'";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $rows = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+      $rows[] = $row;
+    }
+    return $rows;
+  } else {
+    return false;
+  }
+}
+
+function getBankAccountHistory($userId){
+  global $conn;
+  $sql = "SELECT * FROM moneytransfers WHERE senderId='$userId' OR receiverId='$userId' ORDER BY dateTime DESC";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $rows = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+      $rows[] = $row;
+    }
+    return $rows;
+  } else {
+    return false;
+  }
+}
+
+function getBankAccountHistoryWithType($userId){
+  // gelen ödeme mi giden ödeme mi bunu belirtmek için her row sonuna type ekleyeceğiz
+  // 0 gelen 1 giden
+  global $conn;
+  $sql = "SELECT * FROM moneytransfers WHERE senderId='$userId' OR receiverId='$userId' ORDER BY dateTime DESC";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $rows = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+      if ($row["senderId"] == $userId) {
+        $row["type"] = 1;
+      } else {
+        $row["type"] = 0;
+      }
+      $rows[] = $row;
+    }
+    return $rows;
+  } else {
+    return false;
+  }
+  
+}
+
+
 // eğer sayfa post olarak yüklenmişse
 function insertUser()
 {
@@ -102,10 +298,15 @@ function insertUser()
     $password = $_POST["password"];
     $roleID = 1;
     $password = password_hash($password, PASSWORD_DEFAULT);
+    $iban = generateRandomIBAN();
+    
 
-    $sql = "INSERT INTO users (tcNo, fullName, eMail, password, roleID) VALUES ('$tc', '$fullname', '$email', '$password', '$roleID')";
+
+    $sql = "INSERT INTO users (tcNo, fullName, eMail,iban, password, roleID) VALUES ('$tc', '$fullname', '$email','$iban', '$password', '$roleID')";
     if (mysqli_query($conn, $sql)) {
-      
+      // Herhangi bir atm hizmeti olmadığı için parayı rastgele belirliyoruz şuanlık
+      // Normalde yapılması gereken değerin 0 olarak atanması ve kullanıcının hesabına para yatırması
+      insertBankAccount(getUserIdFromTC($tc),"Vadesiz Hesap",rand(1000,9999));
       $_SESSION["lastMSG"] = "Kayıt Başarıyla Tamamlandı, Artık giriş yapabilirsiniz..";
       $_SESSION["lastMSGType"] = "success";
       header("Location: ../login.php");
@@ -114,6 +315,99 @@ function insertUser()
       die("Connection failed: " . mysqli_connect_error());
     }
 
+  }
+}
+
+function updateUser($id, $tc=null, $fullname=null, $email=null,$phone=null)
+{
+  global $conn;
+  
+  $sql = "UPDATE users SET ";
+  if ($tc) {
+    $sql .= "tcNo='$tc',";
+  }
+  if ($fullname) {
+    $sql .= "fullName='$fullname',";
+  }
+  if ($email) {
+    $sql .= "eMail='$email',";
+  }
+  if ($phone) {
+    $sql .= "phoneNumber='$phone',";
+  }
+  $sql = substr($sql, 0, -1);
+  $sql .= " WHERE id='$id'";
+  if (mysqli_query($conn, $sql)) {
+    $_SESSION["lastMSG"] = "Kullanıcı bilgileri başarıyla güncellendi..";
+    $_SESSION["lastMSGType"] = "success";
+    header("Location: ../account.php");
+    exit();
+  } else {
+    die("Connection failed: " . mysqli_connect_error());
+  }
+}
+
+function getAllUsers()
+{
+  global $conn;
+  $sql = "SELECT * FROM users";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $rows = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+      $rows[] = $row;
+    }
+    return $rows;
+  } else {
+    return false;
+  }
+}
+
+function getAllTransfers()
+{
+  global $conn;
+  $sql = "SELECT * FROM moneytransfers ORDER BY dateTime DESC";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $rows = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+      $row['senderName'] = getUserDetailForId($row['senderId'], 'fullName');
+      $row['receiverName'] = getUserDetailForId($row['receiverId'], 'fullName');
+      $rows[] = $row;
+    }
+    return $rows;
+  } else {
+    return false;
+  }
+}
+
+function getAllAdvances()
+{
+  global $conn;
+  $sql = "SELECT * FROM advancerequests ORDER BY datetime DESC";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $rows = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+      $row['userName'] = getUserDetailForId($row['userID'], 'fullName');
+      $rows[] = $row;
+    }
+    return $rows;
+  } else {
+    return false;
+  }
+}
+
+function getUserDetailForId($id, $detail)
+{
+  global $conn;
+  $sql = "SELECT $detail FROM users WHERE id='$id'";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    return $row[$detail];
+  } else {
+    return false;
   }
 }
 
@@ -147,6 +441,37 @@ function login()
   }
 }
 
+function getUser($id)
+{
+  global $conn;
+  $sql = "SELECT * FROM users WHERE id='$id'";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    return $row;
+  } else {
+    return false;
+  }
+}
+
+function updateUserSession()
+{
+  global $conn;
+  if (isset($_SESSION["user"])) {
+    $user = json_decode($_SESSION["user"]);
+    $sql = "SELECT * FROM users WHERE id='$user->id'";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+      $row = mysqli_fetch_assoc($result);
+      $_SESSION["user"] = json_encode($row);
+    } else {
+      $_SESSION["lastMSG"] = "Kullanıcı bulunamadı!";
+      $_SESSION["lastMSGType"] = "danger";
+      return;
+    }
+  }
+}
+
 
 function insertExchange($datajson, $datetime = null)
 {
@@ -169,7 +494,7 @@ function advancePaymentinsert()
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     global $conn;
     $user = json_decode($_SESSION["user"]);
-    $sql = "INSERT INTO advancerequests (userID ,amount) VALUES (" . $user->id . ", '" . $_POST["amount"] . "')";
+    $sql = "INSERT INTO advancerequests (userID ,amount,datetime) VALUES (" . $user->id . ", '" . $_POST["amount"] . "', '" . date("Y-m-d H:i:s") . "')";
     if (mysqli_query($conn, $sql)) {
       $_SESSION["lastMSG"] = "Avans talebiniz başarıyla alındı. En kısa sürede size dönüş yapılacaktır.";
       $_SESSION["lastMSGType"] = "success";
