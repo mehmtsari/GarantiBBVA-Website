@@ -34,9 +34,6 @@ $bankAccount = getBankAccountsData($user['id']);
     
     include 'coreHTML/navbar.php';
     ?>
-
-
-
     <div class="p-5 mb-4 bg-body-tertiary rounded-3">
         <div class="container-fluid py-3">
             <div class="row">

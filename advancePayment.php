@@ -3,6 +3,7 @@ include 'php/db.php';
 include 'php/main.php';
 loginRequired();
 advancePaymentinsert();
+$user = json_decode($_SESSION['user']);
 ?>
 <!DOCTYPE html>
 <html lang="tr">
@@ -27,19 +28,19 @@ advancePaymentinsert();
             <form action="" method="POST">
                 <div class="form-group">
                     <label for="name">Ad Soyad</label>
-                    <input type="text" class="form-control" id="name" name="name" disabled required>
+                    <input type="text" class="form-control" id="name" name="name" disabled required value="<?php echo $user['fullName'] ?>">
                 </div>
                 <div class="form-group">
                     <label for="email">E-Posta</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                    <input type="email" class="form-control" id="email" name="email" required value="<?php echo $user['email'] ?>">
                 </div>
                 <div class="form-group">
                     <label for="tcno">TC Kimlik Numarası</label>
-                    <input type="text" class="form-control" id="tcno" name="tcno" disabled required>
+                    <input type="text" class="form-control" id="tcno" name="tcno" disabled required value="<?php echo $user['tcNo'] ?>">
                 </div>
                 <div class="form-group">
                     <label for="iban">IBAN</label>
-                    <input type="text" class="form-control" id="iban" name="iban" disabled required>
+                    <input type="text" class="form-control" id="iban" name="iban" disabled required value="<?php echo $user['iban'] ?>">
                 </div>
                 <div class="form-group">
                     <label for="amount">Talep Edilen Tutar</label>

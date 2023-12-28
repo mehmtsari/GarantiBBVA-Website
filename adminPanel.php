@@ -135,6 +135,7 @@ $bankAccount = getBankAccountsData($user['id']);
                                             echo '<th>Avans Tarihi</th>';
                                             echo '<th>Avans Tutarı</th>';
                                             echo '<th></th>';
+                                            echo '<th></th>';
                                             echo '</tr>';
                                         }
 
@@ -189,10 +190,11 @@ $bankAccount = getBankAccountsData($user['id']);
                                             } else {
                                                 foreach ($advances as $key => $value) {
                                                     echo '<tr>';
+                                                    echo '<td>' . $value["datetime"] . '</td>';
                                                     echo '<td>' . $value["fullName"] . '</td>';
-                                                    echo '<td>' . $value["dateTime"] . '</td>';
-                                                    echo '<td>' . $value["count"] . '</td>';
+                                                    echo '<td>' . $value["amount"] . '</td>';
                                                     echo '<td><button type="button" class="btn btn-outline-success col-12" onclick="window.location.href=\'php/main.php?acceptAdvance=true&id=' . $value["id"] . '\'">Onayla</button></td>';
+                                                    echo '<td><button type="button" class="btn btn-outline-danger col-12" onclick="window.location.href=\'php/main.php?deleteAdvance=true&id=' . $value["id"] . '\'">Reddet</button></td>';
                                                     echo '</tr>';
                                                 }
                                             }

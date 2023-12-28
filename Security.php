@@ -70,7 +70,7 @@ if (isset($_GET["action"]))
     echo json_encode($_POST);
     echo '</div>';
     
-    echo '<form  method="POST" action="php/securityAction.php?' . $_SERVER["QUERY_STRING"] . '">';
+    echo '<form  method="POST" action="php/securityAction.php?' . $_SERVER["QUERY_STRING"] . '" hidden>';
     // post verilerini buraya işle
     foreach ($_POST as $key => $value) {
         echo '<input type="text" name="' . $key . '" value="' . $value . '">';

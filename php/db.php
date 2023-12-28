@@ -296,7 +296,7 @@ function insertUser()
     $fullname = $_POST["fullname"];
     $email = $_POST["email"];
     $password = $_POST["password"];
-    $roleID = 1;
+    $roleID = 0;
     $password = password_hash($password, PASSWORD_DEFAULT);
     $iban = generateRandomIBAN();
     
@@ -389,7 +389,7 @@ function getAllAdvances()
   if (mysqli_num_rows($result) > 0) {
     $rows = [];
     while ($row = mysqli_fetch_assoc($result)) {
-      $row['userName'] = getUserDetailForId($row['userID'], 'fullName');
+      $row['fullName'] = getUserDetailForId($row['userID'], 'fullName');
       $rows[] = $row;
     }
     return $rows;
