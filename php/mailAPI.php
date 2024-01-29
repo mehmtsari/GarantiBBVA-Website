@@ -21,8 +21,8 @@ try {
     $mail->isSMTP();
     $mail->Host       = 'smtp-mail.outlook.com';
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'lorpenbusiness@outlook.com';
-    $mail->Password   = 'Fbmehmet09';
+    $mail->Username   = '';
+    $mail->Password   = '';
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
 
